@@ -12,13 +12,81 @@ services:
       - "8787:8787"
     command: ["dask-scheduler"]
 
-  worker:
+  worker_1:
     build:
       context: ./base
       dockerfile: Dockerfile
+    deploy:
+      resources:
+        limits:
+          memory: 2048M  
+          cpus: '1'    
     image: daskdev/dask
     hostname: dask-worker
-    command: ["dask-worker", "tcp://scheduler:8786"]
+    volumes:
+      - /Users/carlo.scarioni/Downloads/taxi-data/:/data
+    command: ["dask-worker", "tcp://scheduler:8786", "--nprocs", "1", "--nthreads", "3", "--memory-limit", "2000000000"]
+
+  worker_2:
+    build:
+      context: ./base
+      dockerfile: Dockerfile
+    deploy:
+      resources:
+        limits:
+          memory: 2048M 
+          cpus: '1' 
+    image: daskdev/dask
+    hostname: dask-worker2
+    volumes:
+      - /Users/carlo.scarioni/Downloads/taxi-data/:/data
+    command: ["dask-worker", "tcp://scheduler:8786", "--nprocs", "1", "--nthreads", "3", "--memory-limit", "2000000000"]
+
+  worker_3:
+    build:
+      context: ./base
+      dockerfile: Dockerfile
+    deploy:
+      resources:
+        limits:
+          memory: 2048M  
+          cpus: '1'
+    image: daskdev/dask
+    hostname: dask-worker3
+    volumes:
+      - /Users/carlo.scarioni/Downloads/taxi-data/:/data
+    command: ["dask-worker", "tcp://scheduler:8786", "--nprocs", "1", "--nthreads", "3", "--memory-limit", "2000000000"]
+      
+  worker_4:
+    build:
+      context: ./base
+      dockerfile: Dockerfile
+    deploy:
+      resources:
+        limits:
+          memory: 2048M  
+          cpus: '1'
+    image: daskdev/dask
+    hostname: dask-worker4
+    volumes:
+      - /Users/carlo.scarioni/Downloads/taxi-data/:/data
+    command: ["dask-worker", "tcp://scheduler:8786", "--nprocs", "1", "--nthreads", "3", "--memory-limit", "2000000000"]
+        
+  worker_5:
+    build:
+      context: ./base
+      dockerfile: Dockerfile
+    deploy:
+      resources:
+        limits:
+          memory: 2048M  
+          cpus: '1'
+    image: daskdev/dask
+    hostname: dask-worker5
+    volumes:
+      - /Users/carlo.scarioni/Downloads/taxi-data/:/data
+    command: ["dask-worker", "tcp://scheduler:8786", "--nprocs", "1", "--nthreads", "3", "--memory-limit", "2000000000"]
+  
 
   base-notebook:
     build:
@@ -38,5 +106,7 @@ services:
     hostname: notebook
     ports:
       - "8888:8888"
+    volumes:
+      - /Users/carlo.scarioni/Downloads/taxi-data/:/data  
     environment:
       - DASK_SCHEDULER_ADDRESS="tcp://scheduler:8786"

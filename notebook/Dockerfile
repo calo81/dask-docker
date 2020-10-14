@@ -21,6 +21,8 @@ RUN conda install --yes \
     ipywidgets \
     dask-labextension==3.0.0 \
     python-graphviz \
+    gcsfs \
+    fastparquet \
     && jupyter labextension install @jupyter-widgets/jupyterlab-manager dask-labextension@3.0.0 \
     && conda clean -tipsy \
     && jupyter lab clean \
